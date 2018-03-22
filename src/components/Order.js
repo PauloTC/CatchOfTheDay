@@ -8,15 +8,18 @@ class Order extends React.Component{
 
     const fish = this.props.fishes[key];
     const count = this.props.order[key];
-    const isAvailable = fish.status === "available";
+    const isAvailable = fish &&  fish.status === "available";
+    //make sure the fish in order is continue
+    if(!fish) return null
 
     if(!isAvailable) {
       return <li key={key}> Sorry {fish ? fish.name: "fish"} is no longer available </li>
     }
     return (
-      <li key={key}>
+      <li key={key}  >
         {count} lbs {fish.name}
         {formatPrice(count * fish.price)}
+        <button className="button"  onClick={  () => this.props.removeFromOrder(key)  }  >Detele Order</button>
       </li>
     )
   }
@@ -40,7 +43,7 @@ class Order extends React.Component{
       return(
        <div className="order-wrap" >
           <h2>Order</h2>
-          <ul className="order" > {orderIds.map(this.renderOrder )}  </ul>
+          <ul className="order" > {orderIds.map(this.renderOrder )} </ul>
           <div className="total">
           Total
             <strong> {formatPrice(total)}</strong>
